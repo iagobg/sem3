@@ -21,13 +21,11 @@ while True:
     elif choice == 3:
         produto = input('Produto: ')
         etiquetas = int(input('No de Etiquetas: '))
-        while etiquetas > 0:
-            if etiquetas >= 2:
-                print(f'{produto}  {produto}')
-                etiquetas -= 2
+        for x in range (0, etiquetas, 2):
+            if i+1 < etiquetas:
+                print(f'{produto} {produto}')
             else:
                 print(produto)
-                etiquetas -= 1
                 
     elif choice == 4:
         chinc = int(input('Número de chincilas: '))
