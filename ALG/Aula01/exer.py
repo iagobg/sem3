@@ -22,7 +22,7 @@ while True:
         produto = input('Produto: ')
         etiquetas = int(input('No de Etiquetas: '))
         for x in range (0, etiquetas, 2):
-            if i+1 < etiquetas:
+            if x+1 < etiquetas:
                 print(f'{produto} {produto}')
             else:
                 print(produto)
