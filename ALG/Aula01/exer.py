@@ -1,7 +1,11 @@
 import math
 
 while True:
-    choice = int(input('Número do exercicio: '))
+    try:
+        choice = int(input('Número do exercicio: '))
+    except:
+        print('Input inválido')
+        break
     if choice == 1:
         pessoas = int(input('Número de pessoas: '))
         peixes = int(input('Número de peixes: '))
@@ -13,7 +17,6 @@ while True:
         for x in range (1,numero):
             if numero % x == 0:
                 divisores.append(x)
-            
         print(f'Divisores do {numero}: {', '.join(map(str, divisores))}')
         if sum(divisores) == numero:
             print('O número é perfeito')

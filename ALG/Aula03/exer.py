@@ -6,7 +6,11 @@ import time
 
 
 while True:
-    choice = int(input('Número do exercicio: '))
+    try:
+        choice = int(input('Número do exercicio: '))
+    except:
+        print('Input inválido')
+        break
     if choice == 1:
         senha = input('Senha: ')
         minusculo = False
@@ -73,7 +77,7 @@ while True:
         else:
             ponto = sum(rolagens)
             while True:   
-                input(f'Pressione para continuar jogando! Você tem que rolar {ponto}')
+                input(f'Pressione para continuar jogando! Você tem que rolar {ponto} para ganhar!')
                 rolagens = rolar_dado()
                 if sum(rolagens) == 7:
                     print('Você perdeu!')
@@ -82,7 +86,7 @@ while True:
                     print('Você ganhou!')
                     break
                 else:
-                    print('Você ainda está no jogo!')
+                    print(f'Você rolou {sum(rolagens)} ainda está no jogo, só precisa rolar {ponto}!')
         
     else:
         print('Exercício não encontrado')
