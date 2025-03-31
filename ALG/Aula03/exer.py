@@ -2,6 +2,9 @@ import math
 import random
 import time
 
+
+
+
 while True:
     choice = int(input('Número do exercicio: '))
     if choice == 1:
@@ -51,15 +54,18 @@ while True:
             print('Email inválido!')
         
     elif choice == 6:
+        def  rolar_dado():
+            dados = []
+            for i in range(2):
+                time.sleep(1)
+                num = random.randint(1,6)
+                print(f'Você rolou {num} no {i+1}o dado')
+                dados.append(num)
+            return dados
         input('Pressione para jogar!')
-        rolagens = []
         natural = [7,11]
         craps = [2,3,12]
-        for i in range(2):
-            time.sleep(1)
-            num = random.randint(1,6)
-            print(f'Você rolou {num} no {i+1}o dado')
-            rolagens.append(num)
+        rolagens = rolar_dado()
         if sum(rolagens) in natural:
             print(f'Parabéns, você ganhou! (Natural)')
         elif sum(rolagens) in craps:
@@ -68,11 +74,7 @@ while True:
             ponto = sum(rolagens)
             while True:   
                 input(f'Pressione para continuar jogando! Você tem que rolar {ponto}')
-                for i in range(2):
-                    time.sleep(1)
-                    num = random.randint(1,6)
-                    print(f'Você rolou {num} no {i+1}o dado')
-                    rolagens.append(num)
+                rolagens = rolar_dado()
                 if sum(rolagens) == 7:
                     print('Você perdeu!')
                     break
