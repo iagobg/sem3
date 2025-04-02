@@ -2,7 +2,7 @@ import random
 import time
 import sys
 
-naipes = ['♠️','♥️','♦️','♣️']
+naipes = ['♠', '♥', '♦', '♣']
 extras = ['J','Q','K','A']
 
 
@@ -21,6 +21,9 @@ baralho = monta_baralho()
 
 cartas_jogador = []
 cartas_mesa = []
+mesa_parada = False
+jogador_parado = False
+
     
 def pontos_carta(carta):
     if (carta[0:2] == '10'):
@@ -35,24 +38,35 @@ def pontos_carta(carta):
 
 def pontos_mao(cartas):
     pontos = 0
+    ases = 0
     for carta in cartas:
-        if pontos_carta(carta) == 21 and pontos+pontos_carta(carta) > 21:
-            pontos += 1
-        else:
-            pontos += pontos_carta(carta)
+        if carta[0] == 'A':
+            ases += 1
+        pontos += pontos_carta(carta)
+    while pontos > 21 and ases > 0:
+        pontos -= 10
+        ases -= 1
     return pontos
 
 
 def sacar(mao,pessoa):
     num = random.randint(0,len(baralho)-1)
     mao.append(baralho.pop(num))
-    print(f'{pessoa} sacou {cartas_jogador[-1]}')
+    print(f'{pessoa} sacou {mao[-1]}')
     time.sleep(2)
     return 
 
+
+def checar_blackjack(cartas):
+    if len(cartas) == 2 and pontos_mao(cartas) == 21:
+        return True
+    else:
+        return False
+    
+
 def avaliar():
     jogador = pontos_mao(cartas_jogador)
-    mesa = pontos_mao(cartas_mesa) 
+    mesa = pontos_mao(cartas_mesa)
     if jogador == mesa:
         return 'Empate'
     elif jogador >= mesa:
@@ -60,49 +74,67 @@ def avaliar():
     else:
         return 'Mesa'
     
-    
+def estourou(cartas):
+    if pontos_mao(cartas) > 21:
+        return True
+    else:
+        return False
 
 def fim_de_jogo():
-    resultado = avaliar()
-    if resultado == 'Empate':
-        print('O jogo empatou!')
-    elif resultado == 'Jogador':
-        print('Você venceu!')
-    elif resultado == 'Mesa':
-        print('Você perdeu!')
+    if checar_blackjack(cartas_jogador) or checar_blackjack(cartas_mesa):
+        if checar_blackjack(cartas_jogador) and checar_blackjack(cartas_mesa):
+            print('Ambos jogadores tiraram um blackjack! Empate!')
+        elif checar_blackjack(cartas_jogador):
+            print('Você tirou um blackjack! Parabéns, você venceu')
+        else:
+            print('A mesa tirou um blackjack! Você perdeu')
+    elif estourou(cartas_jogador):
+        print('Você estourou! Seus pontos passaram de 21 e você perdeu o jogo.')
+    elif estourou(cartas_mesa):
+        print('A mesa estourou! Você venceu')
+    elif pontos_mao(cartas_jogador) > pontos_mao(cartas_mesa):
+        print(f'A mesa fez {pontos_mao(cartas_mesa)} pontos e você {pontos_mao(cartas_jogador)}. Você venceu!')
+    elif pontos_mao(cartas_jogador) < pontos_mao(cartas_mesa):
+        print(f'A mesa fez {pontos_mao(cartas_mesa)} pontos e você {pontos_mao(cartas_jogador)}. Você perdeu!')
+    else:
+        print(f'Você e a mesa fizeram a mesma quantidade de pontos({pontos_mao(cartas_mesa)}), empate!')
     return
 
-mesa_parada = False
-jogador_parado = False
 
-while True:
-    if (cartas_jogador == []):
-        for i in range(2):
-            sacar(cartas_jogador,'Você')
-        for i in range(2):
-            sacar(cartas_mesa,'A mesa')
-            time.sleep(2)
-        pontos_jogador = pontos_mao(cartas_jogador)
-        pontos_mesa = pontos_mao(cartas_mesa)
-        print(f'Você tem {pontos_jogador} e a mesa tem {pontos_mesa}')
-        if (pontos_jogador == 21 and pontos_mesa == 21):
-            print('Ambos conseguiram um blackjack! Empate.')
-        elif(pontos_mesa == 21):
-            print('Você perdeu, a mesa conseguiu um blackjack!')
-        elif(pontos_jogador==21):
-            print('Blackjack! Você ganhou!')
-        break
-    else:
-        if(not jogador_parado):
-            escolha = input('Aperte S para continuar.')
-            if escolha.lower() == 's':
-                sacar(cartas_jogador)
-                
-                pontos_jogador = pontos_mao(cartas_jogador)
-                if pontos_jogador > 21:
-                    print('Você passou de 21, infelizmente você perdeu!')
-                    break
+
+
+
+def gameloop():
+    jogador_parado = False
+    mesa_parada = False
+    while not jogador_parado or not mesa_parada:
+        if cartas_jogador == []:
+            for _ in range(2):
+                sacar(cartas_jogador,'Você')
+            for _ in range(2):
+                sacar(cartas_mesa,'A mesa')
+        else:
+            if checar_blackjack(cartas_jogador) or checar_blackjack(cartas_mesa):
+                break
+            pontos_jogador = pontos_mao(cartas_jogador)
+            pontos_mesa = pontos_mao(cartas_mesa)
+            print(f'Você tem {pontos_jogador} e a mesa tem {pontos_mesa}')
+            if(not jogador_parado):
+                escolha = input('Aperte S para continuar.')
+                if escolha.lower() == 's':
+                    sacar(cartas_jogador, 'Você')
+                    if estourou(cartas_jogador):
+                        break
                 else:
-                    print(f'Você está agora com {pontos_mao(cartas_jogador)}')
-        if (not mesa_parada):
-            #TODO MESA
+                    jogador_parado = True
+            if (not mesa_parada):
+                if (not avaliar() == 'Mesa' or pontos_mao(cartas_mesa) < 13) and not pontos_mao(cartas_mesa) == 21:
+                    sacar(cartas_mesa,'A mesa')
+                    if estourou(cartas_mesa):
+                        break
+                else:
+                    mesa_parada = True
+    return
+
+gameloop()
+fim_de_jogo()
