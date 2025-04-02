@@ -25,7 +25,8 @@ router.post('/', async(req, res) => {
 })
 
 router.put('/:id', async(req,res) =>{
-    const {id} = req.params
+    const {id} = req.params;
+
     
 })
 
@@ -36,9 +37,10 @@ router.delete('/:id', async(req,res) => {
         where: {id: parseInt(id)}
     });
 
-    // if (!filmealvo){
-    //     return res.status(404).json({erro: "Filme não encontrado"})
-    // }
+    if (!filmealvo){
+        res.status(400).json({erro: "Filme não encontrado"})
+        return
+    }
 
     await prisma.filme.delete({
         where: {id: parseInt(id)}
