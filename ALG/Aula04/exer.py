@@ -63,8 +63,8 @@ while True:
             if pesquisa.lower() in contas_nome[x].lower():
                 excluir_confirmacao = input(f'Deseja excluir a conta: {contas_nome[x]} - {contas_valor[x]}?')
                 if excluir_confirmacao.lower() == 's':
-                    contas_nome.pop(x)
-                    contas_valor.pop(x)
+                    del contas_nome[x]
+                    del contas_valor[x]
                     print('Conta excluida.')
                 else:
                     print('Conta não excluida.')
