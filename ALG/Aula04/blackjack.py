@@ -113,27 +113,26 @@ def gameloop():
                 sacar(cartas_jogador,'Você')
             for _ in range(2):
                 sacar(cartas_mesa,'A mesa')
-        else:
-            if checar_blackjack(cartas_jogador) or checar_blackjack(cartas_mesa):
-                break
-            pontos_jogador = pontos_mao(cartas_jogador)
-            pontos_mesa = pontos_mao(cartas_mesa)
-            print(f'Você tem {pontos_jogador} e a mesa tem {pontos_mesa}')
-            if(not jogador_parado):
-                escolha = input('Aperte S para continuar.')
-                if escolha.lower() == 's':
-                    sacar(cartas_jogador, 'Você')
-                    if estourou(cartas_jogador):
-                        break
-                else:
-                    jogador_parado = True
-            if (not mesa_parada):
-                if (not avaliar() == 'Mesa' or pontos_mao(cartas_mesa) < 13) and not pontos_mao(cartas_mesa) == 21:
-                    sacar(cartas_mesa,'A mesa')
-                    if estourou(cartas_mesa):
-                        break
-                else:
-                    mesa_parada = True
+        if checar_blackjack(cartas_jogador) or checar_blackjack(cartas_mesa):
+            break
+        pontos_jogador = pontos_mao(cartas_jogador)
+        pontos_mesa = pontos_mao(cartas_mesa)
+        print(f'Você tem {pontos_jogador} e a mesa tem {pontos_mesa}')
+        if(not jogador_parado):
+            escolha = input('Aperte S para continuar.')
+            if escolha.lower() == 's':
+                sacar(cartas_jogador, 'Você')
+                if estourou(cartas_jogador):
+                    break
+            else:
+                jogador_parado = True
+        if (not mesa_parada):
+            if (not avaliar() == 'Mesa' or pontos_mao(cartas_mesa) < 13) and not pontos_mao(cartas_mesa) == 21:
+                sacar(cartas_mesa,'A mesa')
+                if estourou(cartas_mesa):
+                    break
+            else:
+                mesa_parada = True
     return
 
 gameloop()
