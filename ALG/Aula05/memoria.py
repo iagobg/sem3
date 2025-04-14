@@ -3,9 +3,9 @@ import time
 import os
 import json
 import datetime
+from colorama import Fore, Back, Style
 
-
-simbolos = ['🐴','🐸','🐵','🐶','🐯','🐺','🐢'  ,'🐰']*2
+simbolos = ['🐴','🐸','🐵','🐶','🐯','🐺','🐢' ,'🐰']*2
 
 
 pontos = 0
@@ -136,12 +136,17 @@ def finalizar_jogo():
     return
 
 def mostrar_rankings():
-    global rankings
-    rankings_ordenados = sorted(rankings, key=lambda x: x[1], reverse=True)
+    global rankings, nome, pontos, duracao
+    rankings_ordenados = sorted(rankings, key=lambda x: (-x[1], x[2]))
     print("Rankings:")
     print('='*40)
-    for i, (nome, pontos,duracao) in enumerate(rankings_ordenados, start=1):
-        print(f"{i}. {nome}: {pontos} pontos - {duracao} segundos")
+    for i, (nomeR, pontosR,duracaoR) in enumerate(rankings_ordenados, start=1):
+        if (nomeR == nome and pontosR == pontos):
+            print(Fore.RED + f"{i}. {nomeR}: {pontosR} pontos - {duracaoR} segundos")
+            print(Style.RESET_ALL)
+        else:
+            print(f"{i}. {nomeR}: {pontosR} pontos - {duracaoR} segundos")
+
     print('='*40)
     return
 

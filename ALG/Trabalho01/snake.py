@@ -136,7 +136,7 @@ def carregar_rankings():
 
 def mostrar_rankings():
     global rankings
-    rankings_ordenados = sorted(rankings, key=lambda x: x[1], reverse=True)
+    rankings_ordenados = sorted(rankings, key=lambda x: (-x[1], x[2]))
     print("Rankings:")
     print('='*40)
     for i, (nome, pontos,duracao) in enumerate(rankings_ordenados, start=1):
