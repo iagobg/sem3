@@ -1,6 +1,8 @@
 import time
 import curses
 import random
+import json
+import datetime
 
 snake = [(2,3),(2,4)]
 snake_head = (2,4)
@@ -13,9 +15,14 @@ comida = (4,4)
 ultima_direcao = 's'
 tempo_mover = 60
 reducao_mover = 4
+nome = ''
 pontos = 0
 comeu = False
 mudar_direcao = True
+rankings = []
+tempo_comeco = 0
+duracao = 0
+
 
 game_over = False
 
@@ -79,11 +86,12 @@ def checar_colisao(proximo):
         
 
 def comer():
-    global comeu,reducao_mover, comida
+    global comeu,reducao_mover, comida, pontos
     comeu = True
     reducao_mover = min(reducao_mover*1.2,refresh_rate)
     coordenadas_validas = list({(x, y) for x in range(tamanho_tabuleiro) for y in range(tamanho_tabuleiro)} - set(snake))
     comida = random.choice(coordenadas_validas)
+    pontos += 1
     return
 
 def mover():
@@ -108,11 +116,47 @@ def mover():
         tempo_mover -= reducao_mover
     return
 
+def salvar_rankings():
+    try:
+        with open('rankings.json', 'w') as arquivo:
+            json.dump(rankings, arquivo)
+    except Exception as e:
+        print(f"Erro ao salvar os rankings: {e}")
+    return
+
+def carregar_rankings():
+    global rankings
+    try:
+        with open('rankings.json', 'r') as arquivo:
+            rankings = json.load(arquivo)
+    except FileNotFoundError:
+        rankings = []
+    except Exception as e:
+        print(f"Erro ao carregar os rankings: {e}")
+
+def mostrar_rankings():
+    global rankings
+    rankings_ordenados = sorted(rankings, key=lambda x: x[1], reverse=True)
+    print("Rankings:")
+    print('='*40)
+    for i, (nome, pontos,duracao) in enumerate(rankings_ordenados, start=1):
+        print(f"{i}. {nome}: {pontos} pontos - {duracao} segundos")
+    print('='*40)
+    return
+
+
+def inicializar_jogo():
+    global nome, tempo_comeco
+    nome = input('Qual seu nome?')
+    tempo_comeco = datetime.datetime.now()
+    carregar_rankings()
+    return
 
 def game_loop(tela):
-    global tamanho_tabuleiro
+    global tamanho_tabuleiro, pontos, nome, tempo_comeco, rankings, duracao
     tela.nodelay(True)
-    tamanho_tabuleiro = min(tela.getmaxyx())
+    dimensoes = min(tela.getmaxyx())
+    tamanho_tabuleiro = min(dimensoes,12)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_YELLOW)
@@ -134,7 +178,14 @@ def game_loop(tela):
                     
         tela.refresh()
         time.sleep(1/refresh_rate)
-    print('Game over!')
+    print(f'Fim de Jogo! Você Fez {pontos} pontos!')
+    tela.refresh()
+    duracao = datetime.datetime.now() - tempo_comeco
+    duracao = round(duracao.total_seconds(),2)
+    rankings.append((nome,pontos,duracao))
+    salvar_rankings()
+    mostrar_rankings()
     return
 
+inicializar_jogo()
 curses.wrapper(game_loop)
