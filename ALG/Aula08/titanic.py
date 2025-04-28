@@ -16,11 +16,11 @@ def titulo(mensa, traco="-"):
 
 def dados_sexo():
     titulo("Dados por Sexo")
-    homens = [passageiro for passageiro in titanic if passageiro['Sex'] == "Male"]
-    mulheres = [passageiro for passageiro in titanic if passageiro['Sex'] == "Female"]
+    homens = [passageiro for passageiro in titanic if passageiro['Sex'] == "male"]
+    mulheres = [passageiro for passageiro in titanic if passageiro['Sex'] == "female"]
     h_sobrevivementes = [passageiro for passageiro in homens if passageiro['Survived'] == "1"]
     m_sobrevivementes = [passageiro for passageiro in mulheres if passageiro['Survived'] == "1"]
-    print(f"De {len(titanic)} passageiros, haviam {len(homens)} homens ({len(h_sobrevivementes)} sobreviveram, {len(homens)-len(h_sobrevivementes)})e  {len(mulheres)} mulheres ({len(m_sobrevivementes)} sobreviveram, {len(mulheres)-len(m_sobrevivementes)}")
+    print(f"De {len(titanic)} passageiros, haviam {len(homens)} homens ({len(h_sobrevivementes)} sobreviveram, {len(homens)-len(h_sobrevivementes)} morreram ) e  {len(mulheres)} mulheres ({len(m_sobrevivementes)} sobreviveram, {len(mulheres)-len(m_sobrevivementes)} morreram)")
     return
 
 def media_top10():
