@@ -4,14 +4,14 @@ import random
 import json
 import datetime
 
-snake = [(2,3),(2,4)]
-snake_head = (2,4)
+snake = [(0,0),(0,1)]
+snake_head = (0,1)
 refresh_rate = 60
-tamanho_tabuleiro = 8
+tamanho_tabuleiro = 12
 
 cabeca_snake = '↓↓'
 direcao_snake = 's'
-comida = (4,4)
+comida = (1,1)
 ultima_direcao = 's'
 tempo_mover = 60
 reducao_mover = 4
@@ -89,10 +89,18 @@ def comer():
     global comeu,reducao_mover, comida, pontos
     comeu = True
     reducao_mover = min(reducao_mover*1.2,refresh_rate)
-    coordenadas_validas = list({(x, y) for x in range(tamanho_tabuleiro) for y in range(tamanho_tabuleiro)} - set(snake))
+    coordenadas_validas = gerar_coord_comida()
+    if len(coordenadas_validas) < 1:
+        pontos += 50
+        return
     comida = random.choice(coordenadas_validas)
     pontos += 1
     return
+
+def gerar_coord_comida():
+    proximo = proximo_quadrado()
+    return list({(x, y) for x in range(tamanho_tabuleiro) for y in range(tamanho_tabuleiro)} - set(snake) - {proximo})
+    
 
 def mover():
     global tempo_mover, comeu, mudar_direcao
@@ -153,19 +161,20 @@ def inicializar_jogo():
     return
 
 def game_loop(tela):
-    global tamanho_tabuleiro, pontos, nome, tempo_comeco, rankings, duracao
+    global tamanho_tabuleiro, pontos, nome, tempo_comeco, rankings, duracao, comida
     tela.nodelay(True)
     dimensoes = min(tela.getmaxyx())
-    tamanho_tabuleiro = min(dimensoes,12)
+    tabuleiro = min(dimensoes,tamanho_tabuleiro)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_YELLOW)
+    comida = random.choice(gerar_coord_comida())
     while game_over == False:
         detectar_tecla(tela)
         mover()
         tela.clear()
-        for y in range(0,tamanho_tabuleiro):
-            for x in range (0, tamanho_tabuleiro):
+        for y in range(0,tabuleiro):
+            for x in range (0, tabuleiro):
                 if (x,y) in snake:
                     if (x,y) == snake_head:
                         tela.addstr(y, x*2, cabeca_snake, curses.color_pair(2))
