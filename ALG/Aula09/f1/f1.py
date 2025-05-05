@@ -26,7 +26,7 @@ def equipes_10():
     return
 
 def provas_longas():
-    def timeconverter(time):
+    def conversor_tempo(time):
         if not time or time.strip() == '':
             return 0
         tempo_dividido = time.split(':')
@@ -37,7 +37,7 @@ def provas_longas():
         hr = int(tempo_dividido[-3]) * 3600000 if len(tempo_dividido) > 2 else 0
         tempo_convertido = ms + sec + min+ hr
         return tempo_convertido
-    winners_sorted_by_time = sorted(winners,key=lambda x: timeconverter(x['Time']), reverse=True)
+    winners_sorted_by_time = sorted(winners,key=lambda x: conversor_tempo(x['Time']), reverse=True)
     for i, race in enumerate(winners_sorted_by_time):
         print(f"{(i+1):2} - {race['Time']:12} - {race['Grand Prix']:20} - {race['Date']}")
         if i == 9:
