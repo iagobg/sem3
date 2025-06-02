@@ -31,26 +31,28 @@ def jogadores_30():
 
 
 def top_estatistica():
+    estatisticas = {
+        1: ['gp', 'Partidas Jogadas'],
+        2: ['pts', 'Médias de pontos'],
+        3: ['reb', 'Rebotes'],
+        4: ['ast', 'Assistências']
+    }
     print('Qual estatistica deseja filtrar?')
-    print('1. Partidas Jogadas')
-    print('2. Médias de pontos')
-    print('3. Rebotes')
-    print('4. Assistências')
+    for key, value in estatisticas.items():
+        print(f'{key}. {value[1]}')
     opcao2 = int(input("Opção:"))
-    if opcao2 == 1:
-        opcao2 = 'gp'
-    elif opcao2 == 2:
-        opcao2 = 'pts'
-    elif opcao2 == 3:
-        opcao2 = 'reb'
-    elif opcao2 == 4:
-        opcao2 = 'ast'
-        
+    opcao2 = estatisticas.get(opcao2)
+    if opcao2 is None:
+        print('Opção inválida')
+        return
     ano = input("Qual temporada deseja analisar? (E.g. 1996-97)")
     jogadores = [jogador for jogador in nba if jogador['season'] == ano]
-    jogadores = sorted(jogadores, key=lambda x:float(x[opcao2]))
+    if len(jogadores) == 0:
+        print('Temporada inválida')
+        return
+    jogadores = sorted(jogadores, key=lambda x:float(x[opcao2[0]]), reverse = True)
     for i in range(0,10):
-        print(f"{i+1} - {jogadores[i]['player_name']} ({jogadores[i]['season']}) {(float(jogadores[i][opcao2]))}")
+        print(f"{i+1} - {jogadores[i]['player_name']} ({jogadores[i]['season']}) {(float(jogadores[i][opcao2[0]]))}")
     return
 
 def jogadores_pais():
@@ -73,13 +75,18 @@ while True:
     opcao = int(input("Opção:"))
     if opcao == 1:
         jogadores_media()
+        input()
     elif opcao == 2:
         jogadores_pontos()
+        input()
     elif opcao == 3:
         jogadores_30()
+        input()
     elif opcao == 4:
         top_estatistica()
+        input()
     elif opcao == 5:
         jogadores_pais()
+        input()
     else:
         break
