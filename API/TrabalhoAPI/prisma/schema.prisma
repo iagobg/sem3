@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id           Int         @id @default(autoincrement())
+  nome         String      @db.VarChar(60)
+  cpf          String      @db.VarChar(14) @unique
+  telefone     String      @db.VarChar(15)
+  email        String      @db.VarChar(100)
+  endereco     String      @db.VarChar(200)
+  credito      Decimal     @db.Decimal(10,2) @default(0)
+  vendas       Venda[]
+  @@map("clientes")
+}
+
+model Fornecedor {
+  id           Int         @id @default(autoincrement())
+  nome         String      @db.VarChar(60)
+  cnpj         String      @db.VarChar(18) @unique
+  telefone     String      @db.VarChar(15)
+  email        String      @db.VarChar(100)
+  endereco     String      @db.VarChar(200)
+  produtos     Produto[]
+  @@map("fornecedores")
+}
+
+model Produto {
+  id             Int         @id @default(autoincrement())
+  nome           String      @db.VarChar(40)
+  descricao      String?     @db.VarChar(255)
+  categoria      Categoria
+  preco_compra   Decimal     @db.Decimal(10,2)
+  preco_venda    Decimal     @db.Decimal(10,2)
+  estoque        Int         @db.SmallInt @default(0)
+  estoque_min    Int         @db.SmallInt @default(5)
+  fornecedor     Fornecedor  @relation(fields: [fornecedorId], references: [id])
+  fornecedorId   Int
+  vendas         Venda[]
+  @@map("produtos")
+}
+
+enum Categoria {
+  ELETRONICOS
+  ROUPAS
+  CASA
+  ESPORTE
+  LIVROS
+  OUTROS
+}
+
+model Venda {
+  id             Int         @id @default(autoincrement())
+  cliente        Cliente     @relation(fields: [clienteId], references: [id])
+  clienteId      Int
+  produto        Produto     @relation(fields: [produtoId], references: [id])
+  produtoId      Int
+  quantidade     Int         @db.SmallInt
+  preco_unitario Decimal     @db.Decimal(10,2)
+  total          Decimal     @db.Decimal(10,2)
+  data           DateTime    @default(now())
+  @@map("vendas")
+}
