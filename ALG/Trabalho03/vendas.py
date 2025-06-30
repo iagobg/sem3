@@ -4,7 +4,7 @@ from telas.crud_produtos import crud_produtos
 from telas.graf_vendas import graf_vendas
 
 def main(page: ft.Page):
-    page.title = "Loja de Vendas"
+    page.title = "Sistema de Vendas"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.padding = 20
 
@@ -31,7 +31,7 @@ def main(page: ft.Page):
 
     page.add(
         ft.Column([
-            ft.Text("Loja de Vendas - CRUD Produtos", size=30, weight="bold", text_align="center"),
+            ft.Text("Sistema de Vendas", size=30, weight="bold", text_align="center"),
             nav_buttons,
             ft.Divider(),
             conteudo_dinamico

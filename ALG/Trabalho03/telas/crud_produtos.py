@@ -310,7 +310,7 @@ def crud_produtos(pagina):
             bgcolor=ft.Colors.WHITE,
             border=ft.border.all(1, ft.Colors.GREY_300),
             expand=True,
-            height=500
+            height=400
         )
     ], spacing=24, scroll=ft.ScrollMode.AUTO)
 
