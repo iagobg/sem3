@@ -1,161 +1,141 @@
+// seed_expandido.ts
 import { PrismaClient, Categoria } from '@prisma/client'
-
 const prisma = new PrismaClient()
 
-async function main() {
-  console.log('Iniciando seed do banco de dados...')
+function gerarDataVenda(base: Date, incremento: number) {
+  const data = new Date(base)
+  data.setDate(data.getDate() + incremento)
+  return data
+}
 
-  // Limpar dados existentes
+function gerarCNPJ(i: number) {
+  return `${11123123123123+i}`
+}
+
+function gerarCPF(i: number) {
+  return `${11123123123+i}`
+}
+
+const nomesClientes = [
+  'Ana', 'Bruno', 'Carlos', 'Daniela', 'Eduardo', 'Fernanda', 'Gabriel', 'Helena',
+  'Igor', 'Juliana', 'Kleber', 'Larissa', 'Marcos', 'Natalia', 'Otávio', 'Patrícia',
+  'Quintino', 'Rafaela', 'Samuel', 'Tatiane'
+]
+
+const nomesFornecedores = [
+  'Distribuidora Alpha', 'Comercial Beta', 'Importadora Gama', 'Atacadão Delta',
+  'Central Epsilon', 'Global Zeta', 'Fornecedora Eta', 'Distribuidora Theta',
+  'Grupo Iota', 'Comércio Kappa'
+]
+
+const nomesProdutos = [
+  'Notebook Dell', 'Mouse Logitech', 'Teclado Mecânico', 'Monitor LG', 'Headset Gamer',
+  'Webcam HD', 'Pen Drive 64GB', 'HD Externo 1TB', 'Cabo HDMI', 'Carregador USB-C',
+  'Smartphone Samsung', 'Tablet Lenovo', 'Impressora HP', 'Scanner Epson', 'Roteador TP-Link',
+  'Caixa de Som JBL', 'Microfone Condensador', 'Luminária LED', 'Estabilizador APC', 'Cadeira Gamer'
+]
+
+async function main() {
+  console.log('Limpando dados anteriores...')
   await prisma.venda.deleteMany()
   await prisma.produto.deleteMany()
   await prisma.cliente.deleteMany()
   await prisma.fornecedor.deleteMany()
 
-  // Criar fornecedores
-  const fornecedor1 = await prisma.fornecedor.create({
-    data: {
-      nome: 'Tech Solutions Ltda',
-      cnpj: '12.345.678/0001-90',
-      telefone: '(11) 99999-1234',
-      email: 'contato@techsolutions.com',
-      endereco: 'Rua das Tecnologias, 123 - São Paulo, SP'
+  console.log('Criando fornecedores...')
+  const fornecedores = []
+  for (let i = 0; i < nomesFornecedores.length; i++) {
+    const fornecedor = await prisma.fornecedor.create({
+      data: {
+        nome: nomesFornecedores[i],
+        cnpj: gerarCNPJ(i),
+        telefone: `(11) 90000-00${i.toString().padStart(2, '0')}`,
+        email: `contato@${nomesFornecedores[i].toLowerCase().replace(/ /g, '')}.com`,
+        endereco: `Rua ${i + 1}, Centro, Cidade - Estado`
+      }
+    })
+    fornecedores.push(fornecedor)
+  }
+
+  console.log('Criando clientes...')
+  const clientes = []
+  for (let i = 0; i < nomesClientes.length; i++) {
+    const cliente = await prisma.cliente.create({
+      data: {
+        nome: nomesClientes[i],
+        cpf: gerarCPF(i),
+        telefone: `(11) 98888-00${i.toString().padStart(2, '0')}`,
+        email: `cliente${i}@email.com`,
+        endereco: `Av. ${i + 1}, Bairro, Cidade`,
+        credito: 2000 + (i % 5) * 1000
+      }
+    })
+    clientes.push(cliente)
+  }
+
+  console.log('Criando produtos...')
+  const produtos = []
+  const categorias = Object.values(Categoria)
+  for (let i = 0; i < nomesProdutos.length; i++) {
+    const produto = await prisma.produto.create({
+      data: {
+        nome: nomesProdutos[i],
+        descricao: `Descrição do ${nomesProdutos[i]}`,
+        categoria: categorias[i % categorias.length],
+        preco_compra: 50 + i * 10,
+        preco_venda: 80 + i * 15,
+        estoque: 10 + (i % 5) * 5,
+        estoque_min: 3,
+        fornecedorId: fornecedores[i % fornecedores.length].id
+      }
+    })
+    produtos.push(produto)
+  }
+
+  console.log('Criando vendas...')
+  const dataBase = new Date('2025-01-01')
+  let vendasCriadas = 0
+  let dia = 0
+
+  while (vendasCriadas < 50) {
+    const cliente = clientes[Math.floor(Math.random() * clientes.length)]
+    const produto = produtos[Math.floor(Math.random() * produtos.length)]
+
+    const quantidade = Math.floor(Math.random() * 3) + 1
+    const preco = produto.preco_venda
+    const total = Number(preco) * quantidade
+
+    if (Number(cliente.credito) >= total && produto.estoque >= quantidade) {
+      await prisma.venda.create({
+        data: {
+          clienteId: cliente.id,
+          produtoId: produto.id,
+          quantidade,
+          preco_unitario: preco,
+          total,
+          data: gerarDataVenda(dataBase, dia++)
+        }
+      })
+
+      await prisma.produto.update({
+        where: { id: produto.id },
+        data: { estoque: { decrement: quantidade } }
+      })
+
+      await prisma.cliente.update({
+        where: { id: cliente.id },
+        data: { credito: { decrement: total } }
+      })
+
+      vendasCriadas++
     }
-  })
+  }
 
-  const fornecedor2 = await prisma.fornecedor.create({
-    data: {
-      nome: 'Moda & Estilo',
-      cnpj: '98.765.432/0001-10',
-      telefone: '(11) 88888-5678',
-      email: 'vendas@modaestilo.com',
-      endereco: 'Av. da Moda, 456 - Rio de Janeiro, RJ'
-    }
-  })
-
-  // Criar clientes
-  const cliente1 = await prisma.cliente.create({
-    data: {
-      nome: 'João Silva Santos',
-      cpf: '123.456.789-00',
-      telefone: '(11) 91234-5678',
-      email: 'joao.silva@email.com',
-      endereco: 'Rua A, 123 - Centro, São Paulo, SP',
-      credito: 5000.00
-    }
-  })
-
-  const cliente2 = await prisma.cliente.create({
-    data: {
-      nome: 'Maria Oliveira Costa',
-      cpf: '987.654.321-00',
-      telefone: '(11) 98765-4321',
-      email: 'maria.costa@email.com',
-      endereco: 'Av. B, 456 - Jardins, São Paulo, SP',
-      credito: 3000.00
-    }
-  })
-
-  // Criar produtos
-  const produto1 = await prisma.produto.create({
-    data: {
-      nome: 'Notebook Dell Inspiron',
-      descricao: 'Notebook com processador Intel i5, 8GB RAM, SSD 256GB',
-      categoria: Categoria.ELETRONICOS,
-      preco_compra: 2000.00,
-      preco_venda: 2800.00,
-      estoque: 10,
-      estoque_min: 3,
-      fornecedorId: fornecedor1.id
-    }
-  })
-
-  const produto2 = await prisma.produto.create({
-    data: {
-      nome: 'Mouse Wireless Logitech',
-      descricao: 'Mouse sem fio com precisão óptica',
-      categoria: Categoria.ELETRONICOS,
-      preco_compra: 50.00,
-      preco_venda: 89.90,
-      estoque: 25,
-      estoque_min: 5,
-      fornecedorId: fornecedor1.id
-    }
-  })
-
-  const produto3 = await prisma.produto.create({
-    data: {
-      nome: 'Camiseta Polo Masculina',
-      descricao: 'Camiseta polo 100% algodão, diversas cores',
-      categoria: Categoria.ROUPAS,
-      preco_compra: 25.00,
-      preco_venda: 49.90,
-      estoque: 50,
-      estoque_min: 10,
-      fornecedorId: fornecedor2.id
-    }
-  })
-
-  const produto4 = await prisma.produto.create({
-    data: {
-      nome: 'Livro "Programação com Node.js"',
-      descricao: 'Guia completo para desenvolvimento backend',
-      categoria: Categoria.LIVROS,
-      preco_compra: 30.00,
-      preco_venda: 59.90,
-      estoque: 15,
-      estoque_min: 5,
-      fornecedorId: fornecedor1.id
-    }
-  })
-
-  // Criar algumas vendas de exemplo
-  await prisma.venda.create({
-    data: {
-      clienteId: cliente1.id,
-      produtoId: produto2.id,
-      quantidade: 2,
-      preco_unitario: 89.90,
-      total: 179.80
-    }
-  })
-
-  await prisma.venda.create({
-    data: {
-      clienteId: cliente2.id,
-      produtoId: produto3.id,
-      quantidade: 3,
-      preco_unitario: 49.90,
-      total: 149.70
-    }
-  })
-
-  // Atualizar estoque e crédito dos clientes após as vendas
-  await prisma.produto.update({
-    where: { id: produto2.id },
-    data: { estoque: { decrement: 2 } }
-  })
-
-  await prisma.produto.update({
-    where: { id: produto3.id },
-    data: { estoque: { decrement: 3 } }
-  })
-
-  await prisma.cliente.update({
-    where: { id: cliente1.id },
-    data: { credito: { decrement: 179.80 } }
-  })
-
-  await prisma.cliente.update({
-    where: { id: cliente2.id },
-    data: { credito: { decrement: 149.70 } }
-  })
-
-  console.log('Seed concluído com sucesso!')
-  console.log('Dados criados:')
-  console.log('- 2 Fornecedores')
-  console.log('- 2 Clientes')
-  console.log('- 4 Produtos')
-  console.log('- 2 Vendas')
+  console.log(`Seed finalizado com sucesso!`)
+  console.log(`Fornecedores: ${fornecedores.length}`)
+  console.log(`Clientes: ${clientes.length}`)
+  console.log(`Produtos: ${produtos.length}`)
+  console.log(`Vendas: ${vendasCriadas}`)
 }
 
 main()
