@@ -1,3 +1,6 @@
+# DATABASE_URL="mysql://root:password@localhost:3306/vendas"
+# JWT_KEY="Chave_Secreta_Token_#$@_jkdfshj67123673jkNNnxldPkdl"
+
 type: collection.insomnia.rest/5.0
 name: TrabalhoAPI
 meta:
