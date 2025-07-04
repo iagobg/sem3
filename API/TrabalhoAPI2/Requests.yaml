@@ -1,0 +1,717 @@
+type: collection.insomnia.rest/5.0
+name: TrabalhoAPI
+meta:
+  id: wrk_e6f08003663b4da190f17665ac13c8a6
+  created: 1749184621205
+  modified: 1749188659636
+  description: ""
+collection:
+  - name: Clientes
+    meta:
+      id: fld_5e9476e3f4334f64a07b790f708adf0a
+      created: 1749185081148
+      modified: 1749187369599
+      sortKey: -1749185109950.25
+      description: ""
+    children:
+      - url: localhost:3000/clientes
+        name: Criar Cliente
+        meta:
+          id: req_990725e22cb945c4bdffc3c569921851
+          created: 1749184621287
+          modified: 1749186996372
+          isPrivate: false
+          description: ""
+          sortKey: -1749185085927
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Carlos Mendes Rocha",
+              "cpf": "11122233344",
+              "telefone": "(21) 99888-7766",
+              "email": "carlos.rocha@email.com",
+              "endereco": "Rua Nova Esperança, 45 - Niterói, RJ",
+              "credito": 2500.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/clientes/3
+        name: Modificar Cliente
+        meta:
+          id: req_3733f76884904dcbbff999cdb52eb146
+          created: 1749185092824
+          modified: 1749187023221
+          isPrivate: false
+          description: ""
+          sortKey: -1749185085827
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Carlos Mendes Rocha",
+              "cpf": "11122233344",
+              "telefone": "(21) 99888-7766",
+              "email": "carlos.rocha@email.com",
+              "endereco": "Rua Nova Esperança, 45 - Niterói, RJ",
+              "credito": 5000.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/clientes/3
+        name: Deletar Cliente
+        meta:
+          id: req_ff9bcbc2967d4acd836a0f1dd8e7e8bb
+          created: 1749187014520
+          modified: 1749187128168
+          isPrivate: false
+          description: ""
+          sortKey: -1749185085727
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/clientes
+        name: Requerir Clientes
+        meta:
+          id: req_7ee2408879774e0ea4c6eb4c92287927
+          created: 1749187227464
+          modified: 1751618452030
+          isPrivate: false
+          description: ""
+          sortKey: -1749185085977
+        method: GET
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Email
+    meta:
+      id: fld_be26e3526eab4b098f1ddcc7ea144d12
+      created: 1749185157954
+      modified: 1749185157954
+      sortKey: -1749185157954
+      description: ""
+    children:
+      - url: localhost:3000/clientes/email/1
+        name: GetEmail
+        meta:
+          id: req_67e8c14bfb8f4d3d9810548187bece8f
+          created: 1749185160960
+          modified: 1749188350827
+          isPrivate: false
+          description: ""
+          sortKey: -1749185163077
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Fornecedores
+    meta:
+      id: fld_13555e8f31f741a7a38ea5529178f2b4
+      created: 1749186444997
+      modified: 1749186459945
+      sortKey: -1749185119551
+      description: ""
+    children:
+      - url: localhost:3000/fornecedores
+        name: Criar Fornecedor
+        meta:
+          id: req_ebe64eb73dfb4618b2c959f61b4f1b55
+          created: 1749186465957
+          modified: 1749186497450
+          isPrivate: false
+          description: ""
+          sortKey: -1749186465957
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Casa das Ferragens",
+              "cnpj": "11222333444455",
+              "telefone": "(11) 90000-0000",
+              "email": "contato@casadasferragens.com",
+              "endereco": "Av. Industrial, 789 - Campinas, SP"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/fornecedores
+        name: Requerir Fornecedores
+        meta:
+          id: req_f0ff35afe5d546b5ba0445d4b8f22544
+          created: 1749186587776
+          modified: 1749186602786
+          isPrivate: false
+          description: ""
+          sortKey: -1749186587776
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/fornecedores/3
+        name: Modificar Fornecedor
+        meta:
+          id: req_fa85a70c949e4c02b70559baacaf3f2c
+          created: 1749187084622
+          modified: 1749187174506
+          isPrivate: false
+          description: ""
+          sortKey: -1749186465932
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Carlos Mendes Rocha",
+              "cpf": "11122233344",
+              "telefone": "(21) 99888-7766",
+              "email": "carlos.rocha@email.com",
+              "endereco": "Rua Nova Esperança, 45 - Niterói, RJ",
+              "credito": 5000.00
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/fornecedores/3
+        name: Deletar Fornecedor
+        meta:
+          id: req_827083ff7c9b45a7a3563d37bdb36393
+          created: 1749187158699
+          modified: 1749187171884
+          isPrivate: false
+          description: ""
+          sortKey: -1749186465907
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Produtos
+    meta:
+      id: fld_1c015ce064dd4f4f8db041f0c120e77b
+      created: 1749187198911
+      modified: 1751259811640
+      sortKey: -1749185100349.5
+      description: ""
+    children:
+      - url: localhost:3000/produtos
+        name: Requerir Produtos
+        meta:
+          id: req_3e2259af0e434a968da170eaca328970
+          created: 1749185058444
+          modified: 1751259876662
+          isPrivate: false
+          description: ""
+          sortKey: -1749187222822
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/produtos
+        name: Criar Produto
+        meta:
+          id: req_31c318185358402bbe4949bc862a1fff
+          created: 1749187220490
+          modified: 1749187576399
+          isPrivate: false
+          description: ""
+          sortKey: -1749187222722
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+              "nome": "Furadeira Elétrica 500W",
+              "descricao": "Furadeira com regulagem de velocidade e função impacto",
+              "categoria": "ELETRONICOS",
+              "preco_compra": 120.00,
+              "preco_venda": 199.90,
+              "estoque": 20,
+              "estoque_min": 5,
+              "fornecedorId": 3
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/produtos/5
+        name: Modificar Produto
+        meta:
+          id: req_10101b054c6248a9a0a9d0d8eac8a006
+          created: 1749187432667
+          modified: 1749188211732
+          isPrivate: false
+          description: ""
+          sortKey: -1749186905249
+        method: PUT
+        body:
+          mimeType: application/json
+          text: >-
+            {
+              "nome": "Furadeira Elétrica 500W",
+              "descricao": "Furadeira com regulagem de velocidade e função impacto",
+              "categoria": "OUTROS",
+              "preco_compra": 120.00,
+              "preco_venda": 199.90,
+              "estoque": 20,
+              "estoque_min": 5,
+              "fornecedorId": 3
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/produtos/5
+        name: Deletar Produto
+        meta:
+          id: req_11b805d2f18743e5a07cf8d3195a7cf6
+          created: 1749187597595
+          modified: 1749187604604
+          isPrivate: false
+          description: ""
+          sortKey: -1749186905149
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Vendas
+    meta:
+      id: fld_09ab3cc62a8148a590e7e1cc33659b4c
+      created: 1749187704834
+      modified: 1749187704834
+      sortKey: -1749185100299.5
+      description: ""
+    children:
+      - url: localhost:3000/vendas
+        name: Requerir Vendas
+        meta:
+          id: req_849a39c177fa4005940ab238be1b5bda
+          created: 1749187704835
+          modified: 1751618809832
+          isPrivate: false
+          description: ""
+          sortKey: -1749187222822
+        method: GET
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+            id: pair_1f6be18775a647e7a14e1889b0e610eb
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_1e4a0a19ad954a449898a3b94b644c3b
+          - id: pair_d801ff1a4994485f80052e8b04b410cb
+            name: authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTG9nYWRvSWQiOiJmMTg5ZGE3Yi01Y2MwLTRhMjgtODdiNy05Y2MyZTdlZjBiZDgiLCJ1c2VyTG9nYWRvTm9tZSI6IkFuYSBSaXRhIFNpbHZhIiwiaWF0IjoxNzUxNjE4NjcxLCJleHAiOjE3NTE2MjIyNzF9.jSKUVwyKlsJval9VLBV8XiBEEnRDuzbPNfJpC2imzVo
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/vendas
+        name: Criar Venda
+        meta:
+          id: req_ca29276dd6994bd69e7639a15b75daa4
+          created: 1749187704835
+          modified: 1749188275931
+          isPrivate: false
+          description: ""
+          sortKey: -1749187222722
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "clienteId": 3,
+              "produtoId": 5,
+              "quantidade": 2
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/vendas/3
+        name: Deletar Venda
+        meta:
+          id: req_2ae8cb0127194d2a982c1643476aaef7
+          created: 1749187704837
+          modified: 1749188264975
+          isPrivate: false
+          description: ""
+          sortKey: -1749186905149
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Usuarios
+    meta:
+      id: fld_cdde765ffd08443998f16b9c90b2d588
+      created: 1751610524695
+      modified: 1751610524695
+      sortKey: -1751610524695
+      description: ""
+    children:
+      - url: localhost:3000/usuarios
+        name: Requerir Usuarios
+        meta:
+          id: req_1e1b067e8b2a45d589a852b3d956c324
+          created: 1751610540778
+          modified: 1751610553315
+          isPrivate: false
+          description: ""
+          sortKey: -1751610529678
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/usuarios
+        name: Criar Usuario
+        meta:
+          id: req_89f353dbdb714f8082743ee55165f961
+          created: 1751611825967
+          modified: 1751613247505
+          isPrivate: false
+          description: ""
+          sortKey: -1751610529578
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Ana Rita Silva",
+              "email": "ana@email.com",
+            	"senha": "Abc123!123",
+            	"clienteId": "1"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/usuarios
+        name: Criar Usuario 2
+        meta:
+          id: req_9ab9e319cff34ac2b6ae6bb57d8ef731
+          created: 1751614603637
+          modified: 1751618952276
+          isPrivate: false
+          description: ""
+          sortKey: -1750398876200
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Bruno Fagundes da Fonseca",
+              "email": "bruno@email.com",
+            	"senha": "Abc123!123",
+            	"clienteId": "2"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Login
+    meta:
+      id: fld_39590f5cd63b476882f2d530fab2f641
+      created: 1751614319785
+      modified: 1751614330315
+      sortKey: -1751614319785
+      description: ""
+    children:
+      - url: localhost:3000/login
+        name: Login Valido
+        meta:
+          id: req_8b4eb04dfac6405ea3d1860de40e1d45
+          created: 1751614325149
+          modified: 1751618942290
+          isPrivate: false
+          description: ""
+          sortKey: -1751614327080
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "ana@email.com",
+            	"senha": "Abc123!123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/login
+        name: Login Invalido
+        meta:
+          id: req_80d75ac989d74f3c9e524c4122b0936e
+          created: 1751614659940
+          modified: 1751614671337
+          isPrivate: false
+          description: ""
+          sortKey: -1751612428379
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "bruno@email.com",
+            	"senha": "Abc123!123x"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Backup
+    meta:
+      id: fld_a8ce24645f0543c2ba8426ff917c417a
+      created: 1751616900316
+      modified: 1751616908492
+      sortKey: -1751616900316
+      description: ""
+    children:
+      - url: localhost:3000/seguranca/backup
+        name: Backup
+        meta:
+          id: req_23e92812668c47348f88ba7a3b9b59ad
+          created: 1751616903518
+          modified: 1751619710963
+          isPrivate: false
+          description: ""
+          sortKey: -1751616905263
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:3000/seguranca/restore
+        name: Restore
+        meta:
+          id: req_91b78c540d3e448cb5a519d98698b816
+          created: 1751619700408
+          modified: 1751619770339
+          isPrivate: false
+          description: ""
+          sortKey: -1751615616171.5
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_5c6b202a4209d63699ca76a86023ba13227cb118
+    created: 1749184621211
+    modified: 1749184621211
+environments:
+  name: Base Environment
+  meta:
+    id: env_5c6b202a4209d63699ca76a86023ba13227cb118
+    created: 1749184621207
+    modified: 1749184621207
+    isPrivate: false
